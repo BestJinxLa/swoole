@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>websocket</title>
+</head>
+<body>
+<h1>le118-swoole-socket</h1>
+</body>
+<script>
+    var wsUrl = "ws://le.gek6.cn:9911";
+    var webSocket = new WebSocket(wsUrl);
+    //实例对象的onopen属性
+    webSocket.onopen = function (event) {
+        webSocket.send('hello-clientWebSocket-world');
+        console.log('connected websocket success');
+    };
+    //实例对象的onmessage属性
+    webSocket.onmessage = function (event) {
+        console.log('ws-server-return-data:' + event.data);
+    };
+    //onclose
+    webSocket.onclose = function (event) {
+        console.log('close');
+    };
+    //onerror
+    webSocket.onerror = function (event, error) {
+        console.log('error' + error);
+    };
+
+</script>
+</html>

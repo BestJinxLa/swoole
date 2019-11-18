@@ -14,14 +14,27 @@
 
 $ws = new Swoole\WebSocket\Server('0.0.0.0', 9911);
 
+/*不配置这个，也可用http_server服务启动*/
+$ws->set([
+    'document_root' => '/www/wwwroot/le.gek6.cn/demo/data',
+    'enable_static_handler' => true,
+]);
+
 $ws->on('open', 'onOpen');
 function onOpen($ws, $request)
 {
     print_r($request->fd);
 }
-
+//监听ws消息事件
 $ws->on('message', 'onMessage');
-function onMessage()
+function onMessage($ws, $frame)
 {
-
+    echo "receive from {$frame->fd}:{$frame->data},opCode:{$frame->opcode},finish:{$frame->finish} \n";
+    $ws->push($frame->fd, "push-success:{$frame->data}", 1, 1);
 }
+
+$ws->on('close', function ($server, $fd) {
+    echo "client-{$fd} closed\n";
+});
+
+$ws->start();
