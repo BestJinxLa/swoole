@@ -1,15 +1,17 @@
 <?php
 /**
  * Ws 优化基础类库
- * task使用 $ws->task($data);
- * onTask
- * onFinish
- * 设置task_worker_num
- *
  * @auth le118
  * date 2019/11/18
  */
 
+/**
+ * task使用
+ * 设置$ws->set(['worker_num'=>4,'task_worker_num'=>4])
+ * 1.$ws->task($data);
+ * 2.onTask
+ * 3.onFinish
+ */
 class Ws
 {
     const HOST = "0.0.0.0";
@@ -41,7 +43,12 @@ class Ws
      */
     public function onOpen($ws, $request)
     {
-        var_dump($request->fd);
+//        var_dump($request->fd);
+        if ($request->fd == 1) {
+            swoole_timer_tick(2000, function ($timer_id) {
+                echo "time_id:{$timer_id} \n";
+            });
+        }
     }
 
     /**
@@ -56,11 +63,15 @@ class Ws
     public function onMessage($ws, $frame)
     {
         echo "ser-push-message:{$frame->data} \n";
+        /*任务内容*/
         $data = [
-            'task_id' => 1,
+            'task_name' => 01,
             'task_content' => 'first task',
         ];
-        $ws->task($data);
+//        $ws->task($data);
+        swoole_timer_after(5000, function () use ($ws, $frame) {
+            $ws->push($frame->fd, 'server say: push-success:' . date('Y-m-d H:i:s'));
+        });
         $ws->push($frame->fd, 'server-push-success:' . date('Y-m-d H:i:s'));
     }
 

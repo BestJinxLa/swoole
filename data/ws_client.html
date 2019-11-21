@@ -12,7 +12,7 @@
     var webSocket = new WebSocket(wsUrl);
     //实例对象的onopen属性
     webSocket.onopen = function (event) {
-        webSocket.send('hello-clientWebSocket-world');
+        webSocket.send('client-say:hello-WebSocket-world');
         console.log('connected websocket success');
     };
     //实例对象的onmessage属性
