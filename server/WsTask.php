@@ -3,10 +3,7 @@
  * WsTask 异步任务
  * @auth le118
  * date 2019/11/18
- */
-
-/**
- * task使用
+ *
  * 设置$ws->set(['worker_num'=>4,'task_worker_num'=>4])
  * 1.$ws->task($data);
  * 2.onTask
