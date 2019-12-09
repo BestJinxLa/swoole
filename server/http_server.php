@@ -6,6 +6,7 @@
 $http = new swoole_http_server("0.0.0.0", 1993);
 
 $http->set([
+    'worker_num' => 4,
     'document_root' => '/www/wwwroot/le.gek6.cn/demo/data',
     'enable_static_handler' => true,
 ]);
